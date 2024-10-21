@@ -1,15 +1,11 @@
-import express, {Express, Request, Response} from 'express';
 import dotenv from 'dotenv';
+import { EcommerceServer } from './server/server';
+import productRouter from './routes/product-routes';
+
 
 dotenv.config();
 
-const app: Express = express();
-const port = process.env.PORT || 3000;
+const server: EcommerceServer = new EcommerceServer();
+server.mountRoute('/products', productRouter);
+server.start();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
