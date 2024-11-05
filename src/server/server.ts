@@ -1,5 +1,10 @@
 import express from 'express';
 import cors from 'cors';
+import { connectDB } from '../database';
+// import dotenv from 'dotenv';
+
+// dotenv.config();
+
 
 export class EcommerceServer {
 
@@ -13,6 +18,8 @@ export class EcommerceServer {
         this.app = express();
         this.app.use(express.json());
         this.app.use(cors());
+
+        connectDB();
         this.instance = this;
     }
 
