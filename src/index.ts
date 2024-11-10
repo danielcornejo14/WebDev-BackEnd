@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import { EcommerceServer } from './server/server';
 import productRouter from './routes/product';
+import cartRouter from './routes/cart';
+import userRouter from './routes/users';
+import orderRouter from './routes/orders';
 
 
 dotenv.config();
@@ -19,6 +22,9 @@ dotenv.config();
 
 const server: EcommerceServer = new EcommerceServer();
 
-server.mountRoute('/products', productRouter);
+server.mountRoute('/cart', cartRouter)
+    .mountRoute('/users', userRouter)
+    .mountRoute('/orders', orderRouter)
+    .mountRoute('/product', productRouter)
 server.start();
 
