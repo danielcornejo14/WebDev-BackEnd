@@ -22,7 +22,18 @@ export const logIn = async (req: Request, res: Response) => {
 };
 
 export const signUp = async (req: Request, res: Response) => {
-    res.send('POST /signup');
+
+    const newUser: User = req.body;
+
+    if(!newUser || !newUser.email || !newUser.password){
+        res.status(400).send('Invalid user data');
+        return;
+    }
+
+    // Here you should check if the user exists in the database
+
+    // return new user
+    res.status(200).send(newUser);
 };
 
 export const updateProfile = async (req: Request, res: Response) => {
@@ -55,6 +66,7 @@ export const updateProfile = async (req: Request, res: Response) => {
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
+    const userId = req.params.id;
     const payload  = req.body.payload;
     console.log(req.body);
 
@@ -72,8 +84,9 @@ export const deleteUser = async (req: Request, res: Response) => {
         return;
     }
 
-    // Here you should delete the user from the database
-    res.status(200).send('User deleted');
+    // Here you should delete the user with the userId from the database
+
+    res.status(200).send(userId);
 }
 
 export const createUser = async (req: Request, res: Response) => {
@@ -99,4 +112,43 @@ export const createUser = async (req: Request, res: Response) => {
     //after the creation, you should return the created user
 
     res.status(200).send(newUser);
+}
+
+export const getAllUsers = async (req: Request, res: Response) => {
+    const payload  = req.body.payload;
+    console.log(req.body);
+
+    // Here you should check if the user exists in the database
+    const mockUser:User = req.body as User;
+    console.log(mockUser);    
+
+    if(payload.role !== 'admin'){
+        res.status(403).send('Forbidden');
+        return;
+    }
+
+    // Here you should get all the users from the database
+    //after getting the users, you should return the users
+
+    res.status(200).send('All users');
+}
+
+export const getUser = async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const payload  = req.body.payload;
+    console.log(req.body);
+
+    // Here you should check if the user exists in the database
+    const mockUser:User = req.body as User;
+    console.log(mockUser);    
+
+    if(payload.role !== 'admin'){
+        res.status(403).send('Forbidden');
+        return;
+    }
+
+    // Here you should get the user with the userId from the database
+    //after getting the user, you should return the user
+
+    res.status(200).send('User with id: ' + userId);
 }
