@@ -1,13 +1,38 @@
 import { Request, Response } from 'express';
 
 export const addProductToCart = async (req: Request, res: Response) => {
-    res.send('POST /cart');
+    const queryParams = req.query
+    if(!queryParams.userId){
+        res.status(400).send('Query param: \'userId\' not present')
+        return;
+    }
+
+
+    res.status(200).send(queryParams.userId);
 }
 
 export const getCart = async (req: Request, res: Response) => {
-    res.send('GET /cart');
+
+    const queryParams = req.query
+    if(!queryParams.userId){
+        res.status(400).send('Query param: \'userId\' not present');
+        return;
+    }
+
+
+    res.status(200).send(queryParams.userId);
 }
 
 export const deleteProductFromCart = async (req: Request, res: Response) => {
-    res.send(`DELETE /cart/${req.params.id}`);
+    const queryParams = req.query
+    if(!queryParams.userId){
+        res.status(400).send('Query param: \'userId\' not present')
+        return;
+    }
+    if(!queryParams.productId){
+        res.status(400).send('Query param: \'productId\' not present')
+        return;
+    }
+
+    res.status(200).send(queryParams.userId);
 }
