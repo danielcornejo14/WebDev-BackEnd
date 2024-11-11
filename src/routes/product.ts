@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { createProduct, deleteProduct, getAllProducts, getProductById, updateProduct } from "../controllers/product";
+import { jwtVerifyer } from "../middleware/jwt-verifyer";
 
 const productRouter = Router();
 
 productRouter.get('/', getAllProducts);
 productRouter.get('/:id', getProductById);
-productRouter.post('/', createProduct);
-productRouter.put('/:id', updateProduct);
-productRouter.delete('/:id', deleteProduct);
+productRouter.post('/createProduct', jwtVerifyer , createProduct);
+productRouter.put('/updateProduct/:id', jwtVerifyer, updateProduct);
+productRouter.delete('/deleteProduct/:id', jwtVerifyer, deleteProduct);
 
 export default productRouter;

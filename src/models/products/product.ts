@@ -8,7 +8,9 @@ export interface Product {
     description: string;
     price: number;
     image: string;
-    category: Category[];
+    category: Category;
     createdAt: Date;
     updatedAt: Date;
 }
+
+
