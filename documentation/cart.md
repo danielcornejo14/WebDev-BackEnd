@@ -4,32 +4,101 @@ Here you can find more information about the Cart endponts
 ## [GET] Get Cart 
 __Endpoint__: http://localhost:8080/cart/
 
-### Query Params
-userId: Id of the user whose car we want to retrieve
+__Description__: Get the cart of a user
 
-### Body
-N/A
+__headers__: 
+```json
+{
+    "Authorization": "<token>"
+}
+```
+__Response__:
+```json
+{
+    "userId": "userId",
+    "products": [
+        {
+            "productId": "productId",
+            "name": "name",
+            "price": "price",
+            "quantity": "quantity"
+            ...
+        }
+    ]
+}
+```
 
 
-
-## [POST] Add Product
+## [POST] Add Product to Cart
 __Endpoint__: http://localhost:8080/addProduct/
 
-### Query Params
-userId: Id of the user whose car we want to update
+__Description__: Add a product to the cart of a user
 
-### Body
-Product JSON to append to the Cart
+__Headers__: 
+```json
+{
+    "Authorization": "<token>"
+}
+```
 
+__Body__: Product object to add to the cart
+```json
+{
+    "userId": "userId",
+    "productId": "productId",
+    "quantity": "quantity"
+    ...
+}
+```
+
+__Response__: 
+```json
+{
+    "userId": "userId",
+    "products": [
+        {
+            "productId": "productId",
+            "name": "name",
+            "price": "price",
+            "quantity": "quantity"
+            ...
+        }
+    ]
+}
+```
 
 
 ## [DELETE] Delete Product
 __Endpoint__: http://localhost:8080/deleteProduct/
 
-### Query Params
-userId: Id of the user whose car we want to update
-productId: Id of the product we want to remove from the cart
+__Description__: Delete a product from the cart of a user
 
-### Body
-N/A
+__Headers__: 
+```json
+{
+    "Authorization": "<token>"
+}
+```
 
+__Body__: Product object to delete from the cart
+```json
+{
+    "productId": "productId"
+}
+```
+
+__Response__: Cart without the deleted product
+```json
+{
+    "userId": "userId",
+    "products": [
+        {
+            "productId": "productId",
+            "name": "name",
+            "price": "price",
+            "quantity": "quantity"
+            ...
+        }
+    ]
+}
+```

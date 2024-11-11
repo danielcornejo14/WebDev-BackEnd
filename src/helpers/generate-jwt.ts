@@ -11,6 +11,6 @@ export const generateJwt = (user: User) => {
     return new SignJWT(payload)
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt()
-        .setExpirationTime("2h")
+        .setExpirationTime("365d")
         .sign(environment.JWT_SECRET);
 }
