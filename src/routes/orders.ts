@@ -1,13 +1,15 @@
 import { getAllOrders, getOrderById, createOrder, updateOrder, deleteOrder, getOrdersByUserId } from "../controllers/orders"
 import { Router } from "express";
+import { jwtVerifyer } from "../middleware/jwt-verifyer";
+import { adminVerifyer } from "../middleware/admin-verifyer";
 
 const orderRouter = Router();
 
-orderRouter.get('getAll', getAllOrders);
-orderRouter.get('getOrderById/:id', getOrderById);
-orderRouter.post('createOrder', createOrder);
-orderRouter.patch('updateOrder/:id', updateOrder);
-orderRouter.delete('deleteOrder/:id', deleteOrder);
-orderRouter.get('getOrderById/:id', getOrderById);
+orderRouter.get('/', jwtVerifyer, adminVerifyer, getAllOrders);
+orderRouter.get('/:id', jwtVerifyer, getOrderById);
+orderRouter.get('/getOrdersByUserId/:id', jwtVerifyer, getOrdersByUserId);
+orderRouter.post('/createOrder', jwtVerifyer, createOrder);
+orderRouter.put('/updateOrder/:id', jwtVerifyer, updateOrder);
+orderRouter.delete('/deleteOrder/:id', jwtVerifyer, deleteOrder);
 
 export default orderRouter;
