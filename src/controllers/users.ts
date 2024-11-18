@@ -33,7 +33,8 @@ export const signUp = async (req: Request, res: Response) => {
     // Here you should check if the user exists in the database
 
     // return new user
-    res.status(200).send(newUser);
+    const token = await generateJwt(newUser);
+    res.status(200).send(token);
 };
 
 export const updateProfile = async (req: Request, res: Response) => {

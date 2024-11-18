@@ -14,6 +14,7 @@ dotenv.config();
  * - Autentication
  * - Gestion de usuarios
  * - Gestion productos
+ * - Reviews de productos **
  * - Carrito de compras
  * - Pedidos
  * - Proceso de pagos
