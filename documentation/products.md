@@ -72,6 +72,45 @@ __Response:__
 }
 ```
 
+## [GET] Product by Category
+
+__Endpoint:__ `localhost:8080/product/category/:category`
+
+__Description:__ Get product by category
+
+__Query Parameters:__
+- `category` - Category name (in lowercase)
+
+__Response:__
+```json
+[
+    {
+        id: 1,
+        name: 'Product 1',
+        price: 100,
+        description: 'This is a product',
+        image: 'https://via.placeholder.com/150',
+        brand: 'Brand 1',
+        category: [
+            {
+                id: 1,
+                name: 'Category 1',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+            {
+                id: 2,
+                name: 'Category 2',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        ],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+    }
+]
+```
+
 ## [POST] Create product
 
 __Endpoint:__ `localhost:8080/product/createProduct`

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Product } from "../models/products/product";
 import { mockProducts } from "../mocks/products";
+import { hasCategory } from "../helpers/product-category-search";
 
 export const getAllProducts = async (req: Request, res: Response) => {
 
@@ -24,6 +25,22 @@ export const getProductById = async (req: Request, res: Response) => {
 
     res.status(200).json(fetchedProduct);
 }
+
+export const getProductsByCategory = async (req: Request, res: Response) => {
+    
+        const category = req.params.category.toLocaleLowerCase(); 
+        
+        // @chaldiran527 should be fetched from database
+        
+        const fetchedProducts: Product[] = mockProducts.filter(product => hasCategory(product, category));
+        
+        if (fetchedProducts.length === 0) {
+            res.status(404).json({ message: 'Products not found' });
+            return
+        }
+    
+        res.status(200).json(fetchedProducts);
+    }
 
 export const createProduct = async (req: Request, res: Response) => {
 
