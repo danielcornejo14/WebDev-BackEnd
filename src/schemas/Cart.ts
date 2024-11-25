@@ -1,14 +1,30 @@
-import { Schema, InferSchemaType } from "mongoose";
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const cartSchema: Schema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  products: [{
-    product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    quantity: { type: Number, required: true, default: 1 }
-  }],
-}, { timestamps: true });
+const cartSchema = new Schema(
+  {
+    userId: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'User', 
+      required: true 
+    },
+    products: [
+      {
+        productId: {
+          type: Schema.Types.ObjectId, 
+          ref: 'Product', 
+          required: true
+        },
+        quantity: { 
+          type: Number, 
+          required: true, 
+          default: 1 
+        }
+      }
+    ],
+  },
+  { timestamps: true }
+);
 
-export type CartT = InferSchemaType<typeof cartSchema>;
+const CartModel = model('Cart', cartSchema);
 
-export default mongoose.model("Cart", cartSchema);
+export { CartModel };

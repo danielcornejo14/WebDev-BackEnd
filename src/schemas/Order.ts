@@ -1,23 +1,32 @@
-import { Schema, InferSchemaType } from "mongoose";
-import mongoose from "mongoose";
+import { Schema, model } from 'mongoose';
 
-const orderSchema: Schema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  products: [{ 
-    product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-    quantity: { type: Number, required: true }
-  }],
-  totalPrice: { type: Number, required: true },
-  shippingAddress: { type: String, required: true },
-  paymentMethod: { type: String, required: true }, // e.g., 'tarjeta de crédito', 'paypal'
-  status: { 
-    type: String, 
-    required: true, 
-    enum: ['pendiente', 'en preparación', 'enviado', 'entregado'], 
-    default: 'pendiente' 
-  }
-}, { timestamps: true });
+// Order schema definition
+const orderSchema = new Schema(
+  {
+    userId: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'User', // Reference to the User model
+      required: true 
+    },
+    total: { 
+      type: Number, 
+      required: true 
+    },
+    paymentMethod: { 
+      type: String, 
+      enum: ['credit', 'paypal', 'googlepay', 'applepay'], // Payment methods
+      required: true 
+    },
+    status: { 
+      type: String, 
+      enum: ['pending', 'paid', 'shipped', 'delivered'], // Order status
+      required: true 
+    },
+  },
+  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+);
 
-export type OrderT = InferSchemaType<typeof orderSchema>;
+// Create and export the Order model
+const OrderModel = model('Order', orderSchema);
 
-export default mongoose.model("Order", orderSchema);
+export { OrderModel };

@@ -1,14 +1,11 @@
-import { Schema, InferSchemaType } from "mongoose";
-import mongoose from "mongoose";
+import { Schema, model, InferSchemaType } from 'mongoose';
 
 const userSchema: Schema = new Schema({
-  name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: Number, required: true, enum: [0, 1, 2] }, // 0: user, 1: admin, 2: logistic
-  purchaseHistory: [{ type: Schema.Types.ObjectId, ref: 'Order' }] // Reference orders
-}, { timestamps: true });
+  role: { type: String, required: true, enum: ['admin', 'user', 'logistics'] }, // Keep roles simple
+}, { timestamps: true }); // Automatically adds createdAt and updatedAt
 
-export type UserT = InferSchemaType<typeof userSchema>;
+export type UserT = InferSchemaType<typeof userSchema>; // Export the type inferred from schema
 
-export default mongoose.model("User", userSchema);
+export default model<UserT>('User', userSchema); // The actual User model for database interaction
