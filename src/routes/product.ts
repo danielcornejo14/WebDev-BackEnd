@@ -13,7 +13,7 @@ import { jwtVerifyer } from "../middleware/jwt-verifyer";
 const productRouter = Router();
 
 productRouter.get("/", getAllProducts);
-productRouter.get("/:id", getProductById);
+productRouter.get("/getById", getProductById);
 productRouter.post("/seedProducts", seedProducts);
 productRouter.get("/category/:category", getProductsByCategory);
 productRouter.post("/createProduct", jwtVerifyer, createProduct);

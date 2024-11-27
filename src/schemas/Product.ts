@@ -8,6 +8,7 @@ const productSchema = new Schema(
     price: { type: Number, required: true },
     image: { type: String, required: true }, // Image URLs
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true }, // Reference to Category
+    rating: { type: Number, required: true, default: 0 },
   },
   { timestamps: true } //createdAt and updatedAt fields
 );

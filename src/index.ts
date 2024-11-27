@@ -10,18 +10,6 @@ import categoryRouter from './routes/category';
 dotenv.config();
 
 
-/**
- * TODO:
- * - Autentication
- * - Gestion de usuarios
- * - Gestion productos
- * - Reviews de productos **
- * - Carrito de compras
- * - Pedidos
- * - Proceso de pagos
- * - Gestion de inventario
- */
-
 const server: EcommerceServer = new EcommerceServer();
 
 server.mountRoute('/cart', cartRouter)

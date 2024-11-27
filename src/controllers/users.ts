@@ -3,6 +3,7 @@ import { generateJwt } from '../helpers/generate-jwt';
 import { User } from '../models/users/user';
 import  UserModel  from '../schemas/User';
 import exp from 'constants';
+import { UserRole } from '../models/users/user-role';
 
 export const seedUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -46,7 +47,7 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
     try {
         // Find the user by email in the database
         const user = await UserModel.findOne({ email }).exec();
-
+        console.log(email, password);
         if (!user) {
             res.status(404).send("User not found");
             return;
@@ -58,23 +59,21 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-
-        const userResponse = {
-            id: user._id, 
-            email: user.email,
-            role: user.role,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt
+        
+        const userResponse: User = {
+            id: user._id as string, 
+            email: user.email as string,
+            password: user.password as string,
+            role: user.role as UserRole,
+            createdAt: user.createdAt as Date,
+            updatedAt: user.updatedAt as Date
         };
 
-
-
-        // const token = await generateJwt(mockUser);
-        // res.status(200).send(token);
-
-        //Send back the user info
+        const token = await generateJwt(userResponse)
+        
         res.status(200).json({
-            user: userResponse
+            jwt: token,
+            role: user.role
         });
 
     } catch (error) {
