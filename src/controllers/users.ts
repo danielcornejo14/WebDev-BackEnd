@@ -112,16 +112,23 @@ export const signUp = async (req: Request, res: Response, next: NextFunction): P
         const savedUser = await userToCreate.save();
 
         // Convert the mongoose document to a plain object and format the response
-        const userResponse = {
-            id: savedUser._id,
-            email: savedUser.email,
-            role: savedUser.role,
-            createdAt: savedUser.createdAt,
-            updatedAt: savedUser.updatedAt
-        };
 
         // Return the created user (excluding password)
-        res.status(201).json(userResponse);
+        const userResponse: User = {
+            id: savedUser._id as string, 
+            email: savedUser.email as string,
+            password: savedUser.password as string,
+            role: savedUser.role as UserRole,
+            createdAt: savedUser.createdAt as Date,
+            updatedAt: savedUser.updatedAt as Date
+        };
+
+        const token = await generateJwt(userResponse)
+        
+        res.status(200).json({
+            jwt: token,
+            role: savedUser.role
+        });
     } catch (error) {
         // Pass any errors to the error handler middleware
         next(error);

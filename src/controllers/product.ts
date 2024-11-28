@@ -262,8 +262,15 @@ export const createProduct = async (
     try {
         const { name, price, description, image, brand, category } =
             req.body.data; // Access `data`
-
-        // console.log("Creating a new product:", JSON.stringify(req.body, null, 2));
+        console.log(
+            name,
+            price,
+            description,
+            image,
+            brand,
+            category,
+            category._id
+        )
 
         // Validate required fields
         if (
@@ -273,14 +280,15 @@ export const createProduct = async (
             !image ||
             !brand ||
             !category ||
-            !category.id
+            !category._id
         ) {
+
             res.status(400).json({ message: "All fields are required" });
             return;
         }
 
         // Validate category existence in the database
-        const categoryExists = await CategoryModel.findById(category.id);
+        const categoryExists = await CategoryModel.findById(category._id);
         if (!categoryExists) {
             res.status(404).json({ message: "Category not found" });
             return;
