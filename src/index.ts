@@ -5,6 +5,7 @@ import cartRouter from './routes/cart';
 import userRouter from './routes/users';
 import orderRouter from './routes/orders';
 import categoryRouter from './routes/category';
+import reviewRouter from './routes/review';
 
 
 dotenv.config();
@@ -17,5 +18,6 @@ server.mountRoute('/cart', cartRouter)
     .mountRoute('/orders', orderRouter)
     .mountRoute('/product', productRouter)
     .mountRoute('/category', categoryRouter)
+    .mountRoute('/review', reviewRouter)
 server.start();
 
