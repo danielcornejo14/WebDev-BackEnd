@@ -66,6 +66,37 @@ export const getAllReviews = async (
     }
 };
   
+
+export const getReviewById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const reviewId = req.params.id;
+  
+      // Check if the reviewId is a valid MongoDB ObjectId
+      if (!mongoose.Types.ObjectId.isValid(reviewId)) {
+        res.status(400).json({ message: "Invalid ID review" });
+        return;
+      }
+  
+      // Find the review by ID and populate the product and user fields
+      const review = await ReviewModel.findById(reviewId).populate("product user");
+  
+      if (!review) {
+        res.status(404).json({ message: "Review has not been found" });
+        return;
+      }
+  
+      // Return the review
+      res.status(200).json(review);
+    } catch (error) {
+      console.error("Error fetching the review by ID:", error);
+      next(error);
+    }
+};
+
 // Get reviews by product
 export const getReviewsByProduct = async (
     req: Request,

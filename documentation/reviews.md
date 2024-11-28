@@ -153,13 +153,51 @@ response:
     }
 ]
 
+Get a single review
+
+Request with review Id
+
+GET http://localhost:3000/review/6747daa2f28d5c279eace497
+
+Response:
+
+{
+    "_id": "6747daa2f28d5c279eace497",
+    "product": {
+        "rating": 0,
+        "_id": "6742b5055211a0a399aeec24",
+        "name": "Product 20",
+        "brand": "Brand 20",
+        "description": "This is a high-value product",
+        "price": 2000,
+        "image": "https://via.placeholder.com/150",
+        "category": "673ecd32663455067c08b3e9",
+        "createdAt": "2024-11-24T05:07:07.396Z",
+        "updatedAt": "2024-11-24T05:07:07.396Z",
+        "__v": 0
+    },
+    "user": {
+        "_id": "673baa2455b7ef6f55e54946",
+        "email": "perez@gmail.com",
+        "password": "contra123",
+        "role": "user",
+        "createdAt": "2024-11-18T20:57:08.317Z",
+        "updatedAt": "2024-11-18T20:57:08.317Z",
+        "__v": 0
+    },
+    "rating": 5,
+    "comment": "Perfect Product. Updated review comment",
+    "createdAt": "2024-11-28T02:51:14.297Z",
+    "updatedAt": "2024-11-28T03:25:11.126Z",
+    "__v": 0
+}
 
 
 Get reviews by product
 
 Request With product id 
 
-http://localhost:3000/review/product/6742b5055211a0a399aeec24
+GET http://localhost:3000/review/product/6742b5055211a0a399aeec24
 
 Response 
 
