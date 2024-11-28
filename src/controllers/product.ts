@@ -333,7 +333,7 @@ export const updateProduct = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const productId = req.params.id; // Product ID from URL
+        const productId = req.query.id; // Product ID from URL
         const updatedProductData = req.body.data; // Data to update
         const bearer = req.body.payload; // JWT payload
 

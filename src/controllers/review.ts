@@ -10,11 +10,12 @@ export const createReview = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { productId, userId, rating, comment } = req.body.data;
+    const { productId, rating, comment } = req.body.data;
+    const bearer = req.body.payload
     
     // console.log(req.body.data);
 
-    if (!productId || !userId || !rating) {
+    if (!productId || !bearer.id || !rating) {
       res.status(400).json({ message: "Product, User and Rating are required" });
       return;
     }
@@ -29,7 +30,7 @@ export const createReview = async (
     
     const newReview = new ReviewModel({
         product: productId, // 
-        user: userId,       
+        user: bearer.id,       
         rating,
         comment,
       });
