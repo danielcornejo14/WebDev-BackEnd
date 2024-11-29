@@ -10,7 +10,11 @@ import reviewRouter from './routes/review';
 
 dotenv.config();
 
-
+/*TODO: 
+    -alerta de inventario
+        - endpoint de alerta de inventario
+        - endpoint de reabastecimiento de inventario
+*/
 const server: EcommerceServer = new EcommerceServer();
 
 server.mountRoute('/cart', cartRouter)
