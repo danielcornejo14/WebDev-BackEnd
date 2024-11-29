@@ -426,3 +426,34 @@ export const getProductStock = async (req: Request, res: Response): Promise<void
         res.status(500).send("An error occurred while fetching stock");
     }
 }
+
+export const getProductQuantityAlert = async (req: Request, res: Response): Promise<void> => {
+
+    const bearer = req.body.payload;
+    if (bearer.role !== "admin") {
+        res.status(401).json({ message: "Unauthorized" });
+        return
+    }
+
+    try {
+        const stock = await StockModel.find();
+        const lowStock = stock.filter(item => item.quantity < 10);
+
+        res.status(200).json(lowStock);
+    } catch (error) {
+        console.error("Error fetching low stock:", error);
+        res.status(500).send("An error occurred while fetching low stock");
+    }
+
+};
+
+export const restockProduct = async (req: Request, res: Response): Promise<void> => {
+    const bearer = req.body.payload;
+
+    if (bearer.role !== "admin") {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+
+    // Restock database
+};

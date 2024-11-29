@@ -8,6 +8,7 @@ import {
     updateProduct,
     seedProducts,
     getProductStock,
+    getProductQuantityAlert,
 } from "../controllers/product";
 import { jwtVerifyer } from "../middleware/jwt-verifyer";
 
@@ -21,5 +22,7 @@ productRouter.post("/createProduct", jwtVerifyer, createProduct);
 productRouter.put("/updateProduct", jwtVerifyer, updateProduct);
 productRouter.delete("/deleteProduct", jwtVerifyer, deleteProduct);
 productRouter.get("/stock", getProductStock)
+productRouter.get("/quantityAlert", jwtVerifyer, getProductQuantityAlert)
+productRouter.post("/restock", jwtVerifyer, getProductQuantityAlert)
 
 export default productRouter;
