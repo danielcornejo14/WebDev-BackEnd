@@ -455,8 +455,51 @@ export const restockProduct = async (req: Request, res: Response): Promise<void>
         return;
     }
 
-    // Restock database
+    // Get product ID and quantity to restock from the request body
+    const { productId, quantity } = req.body.data;
+
+    // Validate input
+    if (!productId || quantity === undefined || quantity <= 0) {
+        res.status(400).json({ message: "Invalid product ID or quantity" });
+        return;
+    }
+
+    try {
+        // Check if the product exists in the database
+        const product = await ProductModel.findById(productId);
+        if (!product) {
+            res.status(404).json({ message: "Product not found" });
+            return;
+        }
+
+        // Check if the stock entry already exists for the product
+        let stock = await StockModel.findOne({ productId });
+        
+        // If no stock entry exists, create one with the provided quantity
+        if (!stock) {
+            stock = new StockModel({
+                productId: product._id,
+                quantity: quantity,
+            });
+            await stock.save(); // Save new stock 
+        } else {
+            // If stock entry exists, update the quantity by adding the restocked amount
+            stock.quantity = quantity;
+            await stock.save(); // updated stock entry saved
+        }
+
+        // Return the updated stock details
+        res.status(200).json({
+            message: `Product restocked successfully. New quantity in stock: ${stock.quantity}`,
+            productId: product._id,
+            quantity: stock.quantity,
+        });
+    } catch (error) {
+        console.error("Error restocking product:", error);//Pass next error
+        res.status(500).json({ message: "An error occurred while restocking the product" });
+    }
 };
+
 
 
 const getRandomQuantity = (): number => {

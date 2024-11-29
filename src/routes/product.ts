@@ -10,6 +10,7 @@ import {
     getProductStock,
     getProductQuantityAlert,
     seedStock,
+    restockProduct,
 } from "../controllers/product";
 import { jwtVerifyer } from "../middleware/jwt-verifyer";
 
@@ -23,8 +24,8 @@ productRouter.get("/category/:category", getProductsByCategory);
 productRouter.post("/createProduct", jwtVerifyer, createProduct);
 productRouter.put("/updateProduct", jwtVerifyer, updateProduct);
 productRouter.delete("/deleteProduct", jwtVerifyer, deleteProduct);
-productRouter.get("/stock", getProductStock)
-productRouter.get("/quantityAlert", jwtVerifyer, getProductQuantityAlert)
-productRouter.post("/restock", jwtVerifyer, getProductQuantityAlert)
+productRouter.get("/stock", getProductStock);
+productRouter.get("/quantityAlert", jwtVerifyer, getProductQuantityAlert);
+productRouter.put("/restock", jwtVerifyer, restockProduct);
 
 export default productRouter;
