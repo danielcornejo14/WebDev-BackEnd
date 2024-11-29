@@ -5,6 +5,7 @@ import { hasCategory } from "../helpers/product-category-search";
 import { ProductModel } from "../schemas/Product";
 import { CategoryModel } from "../schemas/Category";
 import mongoose from "mongoose";
+import { StockModel } from "../schemas/Stock";
 
 export const seedProducts = async (
     req: Request,
@@ -333,10 +334,10 @@ export const updateProduct = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const productId = req.query.id; // Product ID from URL
+        const productId = req.query.productId; // Product ID from URL
         const updatedProductData = req.body.data; // Data to update
         const bearer = req.body.payload; // JWT payload
-
+        console.log(productId, updatedProductData, bearer)
         if (bearer.role !== "admin") {
             res.status(401).json({ message: "Unauthorized" });
             return;
@@ -389,7 +390,7 @@ export const deleteProduct = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const productId = req.params.id; // Get product ID from URL parameter
+        const productId = req.query.id; // Get product ID from URL parameter
         const bearer = req.body.payload; // Access the payload (which contains user info)
 
         // Ensure the user is an admin
@@ -415,3 +416,13 @@ export const deleteProduct = async (
         next(error);
     }
 };
+
+export const getProductStock = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const stock = await StockModel.find();
+        res.status(200).json(stock);
+    } catch (error) {
+        console.error("Error fetching stock:", error);
+        res.status(500).send("An error occurred while fetching stock");
+    }
+}

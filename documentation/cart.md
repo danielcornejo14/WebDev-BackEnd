@@ -118,8 +118,14 @@ __Body__:
 {
     "total": "total",
     "products": [
-        "productId1",
-        "productId2",
+        {
+            "id":"productId1"
+            "qty": 2
+        },
+        {
+            "id":"productId2"
+            "qty": 6
+        },
         ...
     ]
     "paymentMethod": "paymentMethod"

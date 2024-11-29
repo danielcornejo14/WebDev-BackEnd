@@ -20,4 +20,5 @@ userRouter.delete("/deleteUser", jwtVerifyer, deleteUser);
 userRouter.get("/getUserById", jwtVerifyer, getUser);
 userRouter.get("/getAllUsers", jwtVerifyer, getAllUsers);
 
+
 export default userRouter;

@@ -46,7 +46,8 @@ export const createCartsForAllUsers = async (req: Request, res: Response, next: 
 
 
 export const addProductToCart = async (req: Request, res: Response): Promise<void> => {
-    const { userId, productId, quantity } = req.body.data;
+    const { productId, quantity } = req.body.data;
+    const userId = req.body.payload.id;
 
     if (!userId || !productId || !quantity) {
         res.status(400).send('Missing required fields');
@@ -117,7 +118,7 @@ export const getCart = async (req: Request, res: Response, next: NextFunction): 
     try {
         // Extract the userId from the request body
         const userId  = req.body.payload.id;
-
+        console.log(userId);
         // Validate that the userId is present
         if (!userId) {
             res.status(400).send('User id not present');
@@ -153,7 +154,8 @@ export const getCart = async (req: Request, res: Response, next: NextFunction): 
 
 export const deleteProductFromCart = async (req: Request, res: Response): Promise<void> => {
     // Access productId and userId directly from req.body
-    const { productId, userId } = req.body.data;  // Expecting productId and userId to be at the root level of req.body
+    const { productId } = req.body.data;  // Expecting productId and userId to be at the root level of req.body
+    const userId = req.body.payload.id;
 
     // Check if productId and userId are provided in the request body
     if (!userId) {
@@ -217,7 +219,7 @@ export const deleteProductFromCart = async (req: Request, res: Response): Promis
 };
 
 export const checkoutCart = async (req: Request, res: Response): Promise<void> => {
-    const userId = req.body.payload;
+    const userId = req.body.payload.id;
     const {total, products, paymentMethod} = req.body.data;
 
     if (!userId) {
@@ -232,29 +234,30 @@ export const checkoutCart = async (req: Request, res: Response): Promise<void> =
 
     try {
 
-        products.forEach(async (product: String) => {
+        products.forEach(async (product: any) => {
+            const {id, qty} = product;
             // Find the product in the database
-            const foundProduct = await ProductModel.findById(product);
-            const productStock = await StockModel.findOne({ productId: product });
+            const foundProduct = await ProductModel.findById(id);
+            const productStock = await StockModel.findOne({ productId: id });
 
             if (!foundProduct) {
-                res.status(404).send(`Product with ID ${product} not found`);
+                res.status(404).send(`Product with ID ${id} not found`);
                 return;
             }
 
             if (!productStock) {
-                res.status(404).send(`Stock not found for product with ID ${product}`);
+                res.status(404).send(`Stock not found for product with ID ${id}`);
                 return;
             }
 
             // Check if the quantity in stock is enough
-            if (productStock.quantity <= 0) {
+            if (productStock.quantity <= qty) {
                 res.status(400).send(`Not enough stock for product ${foundProduct.name}`);
                 return;
             }
 
             // Update the stock quantity
-            productStock.quantity -= 1;
+            productStock.quantity -= qty;
             await productStock.save();
         });
 
