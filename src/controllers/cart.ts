@@ -219,49 +219,65 @@ export const deleteProductFromCart = async (req: Request, res: Response): Promis
 };
 
 export const checkoutCart = async (req: Request, res: Response): Promise<void> => {
+    console.log(req.body);
     const userId = req.body.payload.id;
-    const {total, products, paymentMethod} = req.body.data;
+    const { paymentMethod } = req.body.data;
 
     if (!userId) {
         res.status(401).send('Unauthorized');
         return;
     }
 
-    if (!total || !products) {
-        res.status(400).send('Missing required fields, check total and products properties');
+    if (!paymentMethod) {
+        res.status(400).send('Missing payment method');
         return;
     }
 
     try {
+        // Fetch the user's cart from the database
+        const cart = await CartModel.findOne({ userId }).populate({
+            path: 'products.productId',
+            select: 'name price'
+        });
 
-        products.forEach(async (product: any) => {
-            const {id, qty} = product;
-            // Find the product in the database
-            const foundProduct = await ProductModel.findById(id);
-            const productStock = await StockModel.findOne({ productId: id });
+        if (!cart) {
+            res.status(404).send('Cart not found for this user');
+            return;
+        }
+
+        const products = cart.products;
+        let total = 0;
+
+        for (const productInCart of products) {
+            const { productId, quantity } = productInCart;
+            const foundProduct = await ProductModel.findById(productId);
+            const productStock = await StockModel.findOne({ productId });
 
             if (!foundProduct) {
-                res.status(404).send(`Product with ID ${id} not found`);
+                res.status(404).send(`Product with ID ${productId} not found`);
                 return;
             }
 
             if (!productStock) {
-                res.status(404).send(`Stock not found for product with ID ${id}`);
+                res.status(404).send(`Stock not found for product with ID ${productId}`);
                 return;
             }
 
-            // Check if the quantity in stock is enough
-            if (productStock.quantity <= qty) {
+            // Check if the quantity in stock is sufficient
+            if (productStock.quantity < quantity) {
                 res.status(400).send(`Not enough stock for product ${foundProduct.name}`);
                 return;
             }
 
             // Update the stock quantity
-            productStock.quantity -= qty;
+            productStock.quantity -= quantity;
             await productStock.save();
-        });
 
-        // Create new order for the user
+            // Add to the total price
+            total += foundProduct.price * quantity;
+        }
+
+        // Create a new order for the user
         const order = new OrderModel({
             userId,
             products,
@@ -273,12 +289,11 @@ export const checkoutCart = async (req: Request, res: Response): Promise<void> =
         // Save the order to the database
         const newOrder = await order.save();
 
+
         res.status(200).json(newOrder);
 
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error checking out cart:', error);
         res.status(500).send('An error occurred while checking out the cart');
     }
-
 };
