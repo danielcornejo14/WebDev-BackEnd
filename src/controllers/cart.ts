@@ -221,8 +221,8 @@ export const deleteProductFromCart = async (req: Request, res: Response): Promis
 export const checkoutCart = async (req: Request, res: Response): Promise<void> => {
     console.log(req.body);
     
-    // const userId = req.body.payload.id;  // Extract userId from the payload
-    const { userId, paymentMethod } = req.body.data;  // Extract payment method
+    const userId = req.body.payload.id;  // Extract userId from the payload
+    const { paymentMethod } = req.body.data;  // Extract payment method
 
     if (!userId) {
         res.status(401).send('Unauthorized');
