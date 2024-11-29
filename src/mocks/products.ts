@@ -13,6 +13,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.5,
+        discount: 0.1,
     },
     {
         id: 2,
@@ -25,6 +26,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.0,
+        discount: 0.2,
     },
     {
         id: 3,
@@ -37,6 +39,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.8,
+        discount: 0.15,
     },
     {
         id: 4,
@@ -49,6 +52,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.2,
+        discount: 0.25,
     },
     {
         id: 5,
@@ -61,6 +65,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.7,
+        discount: 0.05,
     },
     {
         id: 6,
@@ -73,6 +78,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.1,
+        discount: 0.3,
     },
     {
         id: 7,
@@ -85,6 +91,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.9,
+        discount: 0.1,
     },
     {
         id: 8,
@@ -97,6 +104,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.3,
+        discount: 0.2,
     },
     {
         id: 9,
@@ -109,6 +117,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.6,
+        discount: 0.15,
     },
     {
         id: 10,
@@ -121,6 +130,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.4,
+        discount: 0.25,
     },
     {
         id: 11,
@@ -133,6 +143,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.8,
+        discount: 0.05,
     },
     {
         id: 12,
@@ -145,6 +156,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.2,
+        discount: 0.3,
     },
     {
         id: 13,
@@ -157,6 +169,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.7,
+        discount: 0.1,
     },
     {
         id: 14,
@@ -169,6 +182,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.3,
+        discount: 0.2,
     },
     {
         id: 15,
@@ -181,6 +195,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.9,
+        discount: 0.15,
     },
     {
         id: 16,
@@ -193,6 +208,7 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.1,
+        discount: 0.25,
     },
     {
         id: 17,
@@ -205,5 +221,6 @@ export const mockProducts: Product[] = [
         createdAt: new Date(),
         updatedAt: new Date(),
         rating: 4.6,
+        discount: 0.05,
     },
 ];
