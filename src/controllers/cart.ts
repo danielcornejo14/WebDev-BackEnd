@@ -116,7 +116,7 @@ export const addProductToCart = async (req: Request, res: Response): Promise<voi
 export const getCart = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         // Extract the userId from the request body
-        const { userId } = req.body.data;
+        const userId  = req.body.payload.id;
 
         // Validate that the userId is present
         if (!userId) {
