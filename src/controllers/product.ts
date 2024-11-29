@@ -440,8 +440,10 @@ export const getProductQuantityAlert = async (req: Request, res: Response): Prom
     try {
         const stock = await StockModel.find();
         const lowStock = stock.filter(item => item.quantity < 10);
+        const products = await ProductModel.find();
+        const lowStockProducts = products.filter(product => lowStock.some(stock => stock.productId.equals(product._id)));
 
-        res.status(200).json(lowStock);
+        res.status(200).json(lowStockProducts);
     } catch (error) {
         console.error("Error fetching low stock:", error);
         res.status(500).send("An error occurred while fetching low stock");
