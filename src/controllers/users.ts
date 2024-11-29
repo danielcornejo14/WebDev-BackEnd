@@ -159,6 +159,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
 
         // Update the user's email if provided
         if (updatedUser.email) user.email = updatedUser.email;
+        if (updatedUser.password) user.password = updatedUser.password;
+        if (updatedUser.role) user.role = updatedUser.role;
 
         // Save the updated user to the database
         user.updatedAt = new Date(); // Update the `updatedAt` field
@@ -173,9 +175,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
 
 
 export const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const userId = req.params.id; // Get the userId from request parameters
+    const userId = req.query.id; // Get the userId from request parameters
     const payload = req.body.payload; // Get the user payload from the request body
-
 
 
     // Check if the userId and payload data are valid
