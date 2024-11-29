@@ -5,6 +5,7 @@ const productSchema = new Schema(
     name: { type: String, required: true },
     brand: { type: String, required: true },
     description: { type: String, required: true },
+    discount: { type: Number, required: true, default: 0 },
     price: { type: Number, required: true },
     image: { type: String, required: true }, // Image URLs
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true }, // Reference to Category
