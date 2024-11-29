@@ -30,7 +30,7 @@ __Response__:
 
 
 ## [POST] Add Product to Cart
-__Endpoint__: http://localhost:8080/addProduct/
+__Endpoint__: http://localhost:8080/cart/addProduct/
 
 __Description__: Add a product to the cart of a user
 
@@ -69,7 +69,7 @@ __Response__:
 
 
 ## [DELETE] Delete Product
-__Endpoint__: http://localhost:8080/deleteProduct/
+__Endpoint__: http://localhost:8080/cart/deleteProduct/
 
 __Description__: Delete a product from the cart of a user
 
@@ -100,5 +100,28 @@ __Response__: Cart without the deleted product
             ...
         }
     ]
+}
+```
+
+[POST] Checkout Cart
+__Endpoint__: http://localhost:8080/cart/checkout/
+
+__Headers__: 
+```json
+{
+    "Authorization: "<token>"
+}
+```
+
+__Body__: 
+```json
+{
+    "total": "total",
+    "products": [
+        "productId1",
+        "productId2",
+        ...
+    ]
+    "paymentMethod": "paymentMethod"
 }
 ```

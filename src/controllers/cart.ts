@@ -6,6 +6,10 @@ import { User } from '../models/users/user';
 import  UserModel  from '../schemas/User';
 import { ProductModel } from '../schemas/Product';
 import { Types } from 'mongoose';
+import { Product } from '../models/products/product';
+import { StockModel } from '../schemas/Stock';
+import { OrderModel } from '../schemas/Order';
+import { Order } from '../models/orders/order';
 
 export const createCartsForAllUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -210,4 +214,68 @@ export const deleteProductFromCart = async (req: Request, res: Response): Promis
         console.error('Error deleting product from cart:', error);
         res.status(500).send('An error occurred while deleting the product from the cart');
     }
+};
+
+export const checkoutCart = async (req: Request, res: Response): Promise<void> => {
+    const userId = req.body.payload;
+    const {total, products, paymentMethod} = req.body.data;
+
+    if (!userId) {
+        res.status(401).send('Unauthorized');
+        return;
+    }
+
+    if (!total || !products) {
+        res.status(400).send('Missing required fields, check total and products properties');
+        return;
+    }
+
+    try {
+
+        products.forEach(async (product: String) => {
+            // Find the product in the database
+            const foundProduct = await ProductModel.findById(product);
+            const productStock = await StockModel.findOne({ productId: product });
+
+            if (!foundProduct) {
+                res.status(404).send(`Product with ID ${product} not found`);
+                return;
+            }
+
+            if (!productStock) {
+                res.status(404).send(`Stock not found for product with ID ${product}`);
+                return;
+            }
+
+            // Check if the quantity in stock is enough
+            if (productStock.quantity <= 0) {
+                res.status(400).send(`Not enough stock for product ${foundProduct.name}`);
+                return;
+            }
+
+            // Update the stock quantity
+            productStock.quantity -= 1;
+            await productStock.save();
+        });
+
+        // Create new order for the user
+        const order = new OrderModel({
+            userId,
+            products,
+            total,
+            paymentMethod,
+            status: 'pending',
+        });
+
+        // Save the order to the database
+        const newOrder = await order.save();
+
+        res.status(200).json(newOrder);
+
+    }
+    catch (error) {
+        console.error('Error checking out cart:', error);
+        res.status(500).send('An error occurred while checking out the cart');
+    }
+
 };
