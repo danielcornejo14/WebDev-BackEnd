@@ -28,7 +28,7 @@ export const getAllOrders = async (req: Request, res: Response): Promise<void> =
 
 export const getOrderById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id: orderId } = req.params;
+        const { orderId } = req.query;
 
         // Validate if orderId is provided
         if (!orderId) {
@@ -99,8 +99,11 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
 
 export const updateOrder = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id: orderId } = req.params;
+        const { orderId } = req.query;
+        const  userId  = req.body.payload.id;
+        const { total, paymentMethod, status } = req.body.data;
 
+        
         // Validate if orderId is provided
         if (!orderId) {
             res.status(400).json({ message: 'Order ID is required in params' });
@@ -108,7 +111,6 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
         }
 
         // Ensure order data is provided in the request body
-        const { userId, total, paymentMethod, status } = req.body.data;
 
         if (!userId || !total || !paymentMethod || !status) {
             res.status(400).json({ message: 'Order data is required in body' });
@@ -155,7 +157,7 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
 
 export const deleteOrder = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id: orderId } = req.params;
+        const { orderId } = req.query;
 
         // Validate if orderId is provided
         if (!orderId) {
@@ -186,7 +188,7 @@ export const deleteOrder = async (req: Request, res: Response): Promise<void> =>
 
 export const getOrdersByUserId = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { id: userId } = req.params; // Destructure userId from route parameters
+        const { userId } = req.query; // Destructure userId from route parameters
 
         if (!userId) {
             res.status(400).json({ message: 'User ID is required in params' });
