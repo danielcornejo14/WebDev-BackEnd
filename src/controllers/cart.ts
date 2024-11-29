@@ -220,8 +220,9 @@ export const deleteProductFromCart = async (req: Request, res: Response): Promis
 
 export const checkoutCart = async (req: Request, res: Response): Promise<void> => {
     console.log(req.body);
-    const userId = req.body.payload.id;
-    const { paymentMethod } = req.body.data;
+    
+    // const userId = req.body.payload.id;  // Extract userId from the payload
+    const { userId, paymentMethod } = req.body.data;  // Extract payment method
 
     if (!userId) {
         res.status(401).send('Unauthorized');
@@ -237,7 +238,7 @@ export const checkoutCart = async (req: Request, res: Response): Promise<void> =
         // Fetch the user's cart from the database
         const cart = await CartModel.findOne({ userId }).populate({
             path: 'products.productId',
-            select: 'name price'
+            select: 'name price discount' // Include the discount field
         });
 
         if (!cart) {
@@ -248,6 +249,7 @@ export const checkoutCart = async (req: Request, res: Response): Promise<void> =
         const products = cart.products;
         let total = 0;
 
+        // Iterate through the products in the cart to check stock, apply discounts, and calculate the total price
         for (const productInCart of products) {
             const { productId, quantity } = productInCart;
             const foundProduct = await ProductModel.findById(productId);
@@ -269,12 +271,15 @@ export const checkoutCart = async (req: Request, res: Response): Promise<void> =
                 return;
             }
 
+            // Apply the discount on the product price (if available)
+            const discountedPrice = foundProduct.price * (1 - foundProduct.discount / 100);
+
+            // Add to the total price
+            total += discountedPrice * quantity;
+
             // Update the stock quantity
             productStock.quantity -= quantity;
             await productStock.save();
-
-            // Add to the total price
-            total += foundProduct.price * quantity;
         }
 
         // Create a new order for the user
@@ -289,7 +294,11 @@ export const checkoutCart = async (req: Request, res: Response): Promise<void> =
         // Save the order to the database
         const newOrder = await order.save();
 
+        // Empty the user's cart by clearing the products array
+        cart.products.splice(0, cart.products.length);  
+        await cart.save();  // Save the updated cart (now empty)
 
+        // Return the new order details
         res.status(200).json(newOrder);
 
     } catch (error) {
