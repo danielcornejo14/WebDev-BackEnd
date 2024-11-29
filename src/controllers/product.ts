@@ -457,3 +457,40 @@ export const restockProduct = async (req: Request, res: Response): Promise<void>
 
     // Restock database
 };
+
+
+const getRandomQuantity = (): number => {
+    return Math.floor(Math.random() * 18) + 3; // Random  between 3 and 20
+};
+
+export const seedStock = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        console.log("Seeding stock for products...");
+
+        // Fetch all products from the database
+        const products = await ProductModel.find();
+        if (products.length === 0) {
+            res.status(404).json({ message: "No products found in the database." });
+            return;
+        }
+
+        // Iterate through each product and create a stock entry
+        for (let product of products) {
+            const quantity = getRandomQuantity(); // Generate random quantity
+
+            const stock = new StockModel({
+                quantity,        // Random quantity
+                productId: product._id, // Link the stock entry to the product
+            });
+
+            // Save the stock entry to the database
+            await stock.save();
+            console.log(`Stock for product "${product.name}" set to ${quantity}`);
+        }
+
+        res.status(201).json({ message: "Stock seeded successfully for all products." });
+    } catch (error) {
+        console.error("Error seeding stock:", error);
+        next(error); // Pass error to the next middleware 
+    }
+};
